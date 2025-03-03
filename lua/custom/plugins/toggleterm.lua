@@ -54,70 +54,36 @@ return {
         end,
       },
     }
-    
-    -- Setup terminal keymaps
-    -- Exit terminal mode with Escape key pressed twice
-    vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-    
-    -- Setup numbered terminal sessions (1-4)
-    local Terminal = require('toggleterm.terminal').Terminal
-    
-    -- Create 4 named terminal instances
-    local terminals = {}
-    for i = 1, 4 do
-      terminals[i] = Terminal:new({ 
-        count = i,
-        display_name = "Terminal " .. i,
-        direction = "float",
-      })
-      
-      -- Create keymaps for each terminal
-      -- In normal mode: <leader>1, <leader>2, etc. to toggle terminals
-      vim.keymap.set('n', '<leader>' .. i, function() 
-        terminals[i]:toggle() 
-      end, { desc = 'Toggle Terminal ' .. i })
-      
-      -- In terminal mode: <Esc>1, <Esc>2, etc. to switch to specific terminal
-      vim.keymap.set('t', '<Esc>' .. i, function()
-        -- First exit terminal mode
-        vim.cmd('stopinsert')
-        -- Then toggle the requested terminal
-        terminals[i]:toggle()
-      end, { desc = 'Switch to Terminal ' .. i })
-    end
-  end,
-}
-    
-    -- Setup terminal keymaps
-    -- Exit terminal mode with Escape key pressed twice
-    vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-    
-    -- Setup numbered terminal sessions (1-4)
-    local Terminal = require('toggleterm.terminal').Terminal
-    
-    -- Create 4 named terminal instances
-    local terminals = {}
-    for i = 1, 4 do
-      terminals[i] = Terminal:new({ 
-        count = i,
-        display_name = "Terminal " .. i,
-        direction = "float",
-      })
-      
-      -- Create keymaps for each terminal
-      -- In normal mode: <leader>1, <leader>2, etc. to toggle terminals
-      vim.keymap.set('n', '<leader>' .. i, function() 
-        terminals[i]:toggle() 
-      end, { desc = 'Toggle Terminal ' .. i })
-      
-      -- In terminal mode: <Esc>1, <Esc>2, etc. to switch to specific terminal
-      vim.keymap.set('t', '<Esc>' .. i, function()
-        -- First exit terminal mode
-        vim.cmd('stopinsert')
-        -- Then toggle the requested terminal
-        terminals[i]:toggle()
-      end, { desc = 'Switch to Terminal ' .. i })
-    end
-  end,
-}
 
+    -- Setup terminal keymaps
+    -- Exit terminal mode with Escape key pressed twice
+    vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+    -- Setup numbered terminal sessions (1-4)
+    local Terminal = require('toggleterm.terminal').Terminal
+
+    -- Create 4 named terminal instances
+    local terminals = {}
+    for i = 1, 4 do
+      terminals[i] = Terminal:new {
+        count = i,
+        display_name = 'Terminal ' .. i,
+        direction = 'float',
+      }
+
+      -- Create keymaps for each terminal
+      -- In normal mode: <leader>1, <leader>2, etc. to toggle terminals
+      vim.keymap.set('n', '<leader>' .. i, function()
+        terminals[i]:toggle()
+      end, { desc = 'Toggle Terminal ' .. i })
+
+      -- In terminal mode: <Esc>1, <Esc>2, etc. to switch to specific terminal
+      vim.keymap.set('t', '<Esc>' .. i, function()
+        -- First exit terminal mode
+        vim.cmd 'stopinsert'
+        -- Then toggle the requested terminal
+        terminals[i]:toggle()
+      end, { desc = 'Switch to Terminal ' .. i })
+    end
+  end,
+}

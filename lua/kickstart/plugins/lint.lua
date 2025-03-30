@@ -43,16 +43,34 @@ return {
 
       -- Create autocommand which carries out the actual linting
       -- on the specified events.
+      local lint = require("lint")
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+      local lint_debounce_timer = nil
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
         callback = function()
           -- Only run the linter in buffers that you can modify in order to
           -- avoid superfluous noise, notably within the handy LSP pop-ups that
           -- describe the hovered symbol using Markdown.
-          if vim.opt_local.modifiable:get() then
-            lint.try_lint()
+          local buf = vim.api.nvim_get_current_buf()
+
+          -- Debounce logic
+          if lint_debounce_timer then
+            vim.fn.timer_stop(lint_debounce_timer)
           end
+
+          lint_debounce_timer = vim.fn.timer_start(200, function()
+            -- Validity checks
+            if not vim.api.nvim_buf_is_valid(buf) then return end
+            if vim.bo[buf].filetype == "neo-tree" then return end
+            if vim.fn.buflisted(buf) == 0 then return end
+            if not vim.bo[buf].modifiable then return end
+
+            -- Safe lint execution
+            pcall(function()
+              lint.try_lint(buf)
+            end )
+          end)
         end,
       })
     end,

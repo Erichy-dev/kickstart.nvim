@@ -108,6 +108,15 @@ vim.opt.number = true
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
+-- Enable word wrap
+vim.opt.wrap = true
+
+-- Wrap at word boundaries (instead of mid-word)
+vim.opt.linebreak = true
+
+-- Maintain indent for wrapped lines
+vim.opt.breakindent = true
+
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
@@ -229,6 +238,8 @@ vim.opt.rtp:prepend(lazypath)
 --  To update plugins you can run
 --    :Lazy update
 --
+
+require('custom.plugins.mappings').setup()
 
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
